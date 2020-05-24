@@ -1,7 +1,7 @@
 import {CometChat} from '@cometchat-pro/chat';
 import config from '../config';
 export default class CCManager {
-    static LISTENER_KEY_MESSAGE = "msglitener";
+    static LISTENER_KEY_MESSAGE = "msglistener";
     static appId = config.appId;
     static apiKey = config.apiKey;
     static  LISTENER_KEY_GROUP = "grouplistener";
@@ -18,14 +18,12 @@ export default class CCManager {
           return new CometChat.TextMessage(
             uid,
             text,
-            CometChat.MESSAGE_TYPE.TEXT,
             CometChat.RECEIVER_TYPE.USER
           );
         } else {
           return new CometChat.TextMessage(
             uid,
             text,
-            CometChat.MESSAGE_TYPE.TEXT,
             CometChat.RECEIVER_TYPE.GROUP
           );
         }
@@ -56,6 +54,7 @@ export default class CCManager {
           this.LISTENER_KEY_MESSAGE,
           new CometChat.MessageListener({
             onTextMessageReceived: textMessage => {
+              console.log(textMessage);
               callback(textMessage);
             }
           })
