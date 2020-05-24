@@ -18,7 +18,15 @@ sendMessage = () => {
     chat.sendGroupMessage(this.GUID, this.state.messageText).then(
       message => {
         console.log("Message sent successfully:", message);
-        this.setState({ messageText: null });
+        this.setState(
+          prevState => ({
+            groupMessage: [...prevState.groupMessage, message],
+            messageText : null,
+          }),
+          () => {
+            this.scrollToBottom();
+          }
+        );
       },
       error => {
         if (error.code === "ERR_NOT_A_MEMBER") {

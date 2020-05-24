@@ -52,6 +52,7 @@ export default class CCManager {
           this.LISTENER_KEY_MESSAGE,
           new CometChat.MessageListener({
             onTextMessageReceived: textMessage => {
+              console.log(textMessage);
               callback(textMessage);
             }
           })
