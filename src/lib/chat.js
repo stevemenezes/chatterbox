@@ -5,8 +5,12 @@ export default class CCManager {
     static appId = config.appId;
     static apiKey = config.apiKey;
     static  LISTENER_KEY_GROUP = "grouplistener";
+    static appSetting = new CometChat.AppSettingsBuilder().subscribePresenceForAllUsers().setRegion("us").build();
+
     static init(){
-        return CometChat.init(CCManager.appId);
+        console.log("calling init");
+        console.log(CCManager.appId);
+        return CometChat.init(CCManager.appId,CCManager.appSetting);
     }
 
     static getTextMessage(uid, text, msgType){

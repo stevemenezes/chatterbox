@@ -30,12 +30,15 @@ class Login extends React.Component{
         this.setState({isSubmitting: !this.state.isSubmitting});
     };
 
+
     login=()=>{
         this.toggleIsSubmitting();
         chat.login(this.state.name)
         .then(user=>{
             this.setState({user, isAuth: true})
-        }).catch(error=>{
+            console.log(this.state.user,this.state.isAuth);
+        })
+        .catch(error=>{
         this.setState({errorText: "Username Invalid"})
         this.toggleIsSubmitting();
         console.log(error);
