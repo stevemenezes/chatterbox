@@ -46,7 +46,7 @@ export default class CCManager {
         return messagesRequest.fetchPrevious();
     }
 
-    static sendGroupMessage(UID, nessage){
+    static sendGroupMessage(UID, message){
         const textMessage = this.getTextMessage(UID, message, "group");
         return CometChat.sendMessage(textMessage);
     }
