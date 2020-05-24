@@ -8,13 +8,10 @@ export default class CCManager {
     static appSetting = new CometChat.AppSettingsBuilder().subscribePresenceForAllUsers().setRegion("us").build();
 
     static init(){
-        console.log("calling init");
-        console.log(CCManager.appId);
         return CometChat.init(CCManager.appId,CCManager.appSetting);
     }
 
     static getTextMessage(uid, text, msgType) {
-        console.log(uid);
         if (msgType === "user") {
           return new CometChat.TextMessage(
             uid,
@@ -45,7 +42,6 @@ export default class CCManager {
       }
       static sendGroupMessage(UID, message) {
         const textMessage = this.getTextMessage(UID, message, CometChat.RECEIVER_TYPE.GROUP);
-        console.log(textMessage);
         return CometChat.sendMessage(textMessage);
       }
       static joinGroup(GUID) {
@@ -56,7 +52,6 @@ export default class CCManager {
           this.LISTENER_KEY_MESSAGE,
           new CometChat.MessageListener({
             onTextMessageReceived: textMessage => {
-              console.log(textMessage);
               callback(textMessage);
             }
           })

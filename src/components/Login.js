@@ -20,7 +20,6 @@ class Login extends React.Component{
     }
 
     showValue=(e)=>{
-        console.log("Though shall not name " + this.state.name);
         e.preventDefault();
         this.login();
         e.target.reset();
@@ -36,13 +35,10 @@ class Login extends React.Component{
         chat.login(this.state.name)
         .then(user=>{
             this.setState({user, isAuth: true})
-            console.log(this.state.user,this.state.isAuth);
-        })
+            })
         .catch(error=>{
         this.setState({errorText: "Username Invalid"})
         this.toggleIsSubmitting();
-        console.log(error);
-        console.log(this.state.isAuth);
         });
     }
 

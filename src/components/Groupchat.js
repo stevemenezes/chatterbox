@@ -75,6 +75,7 @@ componentDidMount() {
     // chat.joinGroup(this.GUID)
   }
 render() {
+    co
     const { isAuthenticated } = this.state;
     if (!isAuthenticated) {
       return <Redirect to="/" />;
