@@ -46,13 +46,7 @@ export default class CCManager {
       static sendGroupMessage(UID, message) {
         const textMessage = this.getTextMessage(UID, message, CometChat.RECEIVER_TYPE.GROUP);
         console.log(textMessage);
-        CometChat.sendMessage(textMessage).then(
-            message => {
-              console.log("Message sent successfully:", message);
-            },
-            error => {
-              console.log("Message sending failed with error:", error);
-        });
+        return CometChat.sendMessage(textMessage);
       }
       static joinGroup(GUID) {
         return CometChat.joinGroup(GUID, CometChat.GROUP_TYPE.PUBLIC, "");
