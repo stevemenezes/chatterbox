@@ -49,7 +49,7 @@ getUser = () => {
         this.setState({ user });
       })
       .catch(({ error }) => {
-        if (error.code === "USER_NOT_LOGED_IN") {
+        if (error === "USER_NOT_LOGED_IN") {
           this.setState({
             isAuthenticated: false
           });
