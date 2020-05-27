@@ -40,10 +40,15 @@ class Login extends React.Component{
         this.setState({errorText: "Username Invalid"})
         this.toggleIsSubmitting();
         });
+
+        
     }
 
+
+
     render(){
-        if (this.state.isAuth){
+        
+        if (this.state.isAuth===true){
             return(
                 <Redirect to={{
                     pathname: '/chat',
@@ -52,10 +57,11 @@ class Login extends React.Component{
                 />
             );
         }
+
         return(
             <div className="App">
                 <h2>Chat Room Login</h2>
-                <form onSubmit={this.showValue}>
+                <form onSubmit={this.showValue} >
                     <div className="form-group">
                         <label>
                         Name:
