@@ -40,8 +40,6 @@ class Login extends React.Component{
         this.setState({errorText: "Username Invalid"})
         this.toggleIsSubmitting();
         });
-
-        
     }
 
 
