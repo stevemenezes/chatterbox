@@ -40,6 +40,9 @@ class Login extends React.Component{
         this.setState({errorText: "Username Invalid"})
         this.toggleIsSubmitting();
         });
+        if (this.state.isAuth===false){
+            alert("Invalid ID try again?")
+        }
     }
 
     render(){
@@ -52,6 +55,7 @@ class Login extends React.Component{
                 />
             );
         }
+
         return(
             <div className="App">
                 <h2>Chat Room Login</h2>
