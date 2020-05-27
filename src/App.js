@@ -15,10 +15,23 @@ class App extends React.Component{
       <Switch>
         <Redirect exact from="/" to="/login"/>
         <Route path="/login" component={Login}/>
-        <Route path="/chat" component={Groupchat}/>
+        <PrivateRoute path="/chat" component={Groupchat}/>
       </Switch>
     );
   }
 }
+
+const PrivateRoute= ({component: Component, ...rest}) => 
+  
+  <Route {...rest} render={
+    (props)=>{
+      return(
+        props.location.state?
+        <Component {...props}/>
+        :(<Redirect to='/login'/>)
+      ) 
+    }
+  }
+  />
 
 export default App;
