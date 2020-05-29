@@ -74,4 +74,8 @@ export default class CCManager {
         )
       }
 
+      static logout(callback){
+        return CometChat.logout();
+      }
+
     }
