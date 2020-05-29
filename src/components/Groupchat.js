@@ -13,6 +13,7 @@ this.state = {
       isAuthenticated: true
     };
 this.GUID = config.GUID;
+
   }
 sendMessage = () => {
     chat.sendGroupMessage(this.GUID, this.state.messageText).then(
@@ -78,11 +79,21 @@ messageListener = () => {
       );
     });
   };
+
+userListener = () =>{
+  chat.addUserListener((data, error)=>{
+    if (error) return console.log(`error: ${error}`);
+    console.log(data)
+  });
+}
+
 componentDidMount() {
     this.getUser();
     this.messageListener();
+    this.userListener();
     // chat.joinGroup(this.GUID)
   }
+  
 render() {
   //console.log(this.props);  
   const { isAuthenticated } = this.state;

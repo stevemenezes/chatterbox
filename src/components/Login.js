@@ -48,12 +48,14 @@ class Login extends React.Component{
         });
     }
 
+
+
     render(){
         
         return(
             <div className="App">
                 <h2>Chat Room Login</h2>
-                <form onSubmit={this.showValue}>
+                <form onSubmit={this.showValue} >
                     <div className="form-group">
                         <label>
                         Name:

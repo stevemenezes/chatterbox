@@ -57,4 +57,21 @@ export default class CCManager {
           })
         );
       }
+
+      static addUserListener(callback){
+        CometChat.addUserListener(
+          this.LISTENER_KEY_GROUP,
+          new CometChat.UserListener({
+            onUserOnline: onlineUser => {
+              /* when someuser/friend comes online, user will be received here */
+            console.log("On User Online:", { onlineUser });
+            },
+            onUserOffline: offlineUser => {
+              /* when someuser/friend went offline, user will be received here */
+              console.log("On User Offline:", { offlineUser });
+            }
+          })
+        )
+      }
+
     }
