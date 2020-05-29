@@ -50,19 +50,20 @@ handleChange = event => {
     this.setState({ messageText: event.target.value });
   };
 getUser = () => {
-    chat
+      chat
       .getLoggedinUser()
-      .then(user => {
-        console.log("user details:", { user });
+      .then(
+        user => {
         this.setState({ user });
-      })
-      .catch(({ error }) => {
-        if (error === "USER_NOT_LOGED_IN") {
+        console.log(user)
+      },
+      error =>{
+        console.log(error)
           this.setState({
             isAuthenticated: false
-          });
-        }
-      });
+          })
+        })
+
   };
 messageListener = () => {
     chat.addMessageListener((data, error) => {
@@ -83,7 +84,8 @@ componentDidMount() {
     // chat.joinGroup(this.GUID)
   }
 render() {
-    const { isAuthenticated } = this.state;
+  //console.log(this.props);  
+  const { isAuthenticated } = this.state;
     if (!isAuthenticated) {
       return <Redirect to="/" />;
     }

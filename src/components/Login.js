@@ -36,6 +36,12 @@ class Login extends React.Component{
         .then(user=>{
             this.setState({user, isAuth: true})
             })
+        .then(user => {
+                this.props.history.push({
+                pathname : '/chat',
+                state : this.state.user
+            })
+        })    
         .catch(error=>{
         this.setState({errorText: "Username Invalid"})
         this.toggleIsSubmitting();
@@ -43,15 +49,7 @@ class Login extends React.Component{
     }
 
     render(){
-        if (this.state.isAuth){
-            return(
-                <Redirect to={{
-                    pathname: '/chat',
-                    state: {user: this.state.user}
-                }}
-                />
-            );
-        }
+        
         return(
             <div className="App">
                 <h2>Chat Room Login</h2>
