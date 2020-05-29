@@ -24,7 +24,7 @@ class NavComponent extends React.Component {
               <div class="navbar-brand">ChatterBox</div>
             </div>
             <div class="navbar-form navbar-left" >
-              <button type="submit" class="btn btn-primary" onClick = {this.logOut} >Submit</button>
+              <button type="submit" class="btn btn-primary" onClick = {this.logOut} >Logout</button>
             </div>
           </div>
         </nav>

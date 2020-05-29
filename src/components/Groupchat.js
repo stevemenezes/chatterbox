@@ -56,7 +56,11 @@ getUser = () => {
       .then(
         user => {
         this.setState({ user });
-        console.log(user)
+        if(user === null || user === undefined )
+        {
+          this.props.history.push('./login');
+        }
+        console.log(user);
       },
       error =>{
           this.setState({
