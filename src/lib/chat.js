@@ -6,6 +6,7 @@ export default class CCManager {
     static apiKey = config.apiKey;
     static  LISTENER_KEY_GROUP = "grouplistener";
     static appSetting = new CometChat.AppSettingsBuilder().subscribePresenceForAllUsers().setRegion("us").build();
+    static usersRequest = new CometChat.UsersRequestBuilder().setLimit(10).build();
 
     static init(){
         return CometChat.init(CCManager.appId,CCManager.appSetting);
@@ -73,5 +74,6 @@ export default class CCManager {
           })
         )
       }
+      
 
     }
