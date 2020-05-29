@@ -3,7 +3,10 @@ import chat from './lib/chat'
 import {withRouter} from 'react-router-dom'; 
 class NavComponent extends React.Component {
   
+  
+  
   logOut = () =>{
+    
     chat.logout().then(
       () =>{
         this.props.history.push("/login");
@@ -13,7 +16,7 @@ class NavComponent extends React.Component {
       }
     )
   }
-  
+
   render() {
 
     return (
@@ -23,9 +26,10 @@ class NavComponent extends React.Component {
             <div class="navbar-header">
               <div class="navbar-brand">ChatterBox</div>
             </div>
-            <div class="navbar-form navbar-left" >
+              <div class="navbar-form navbar-left" >
               <button type="submit" class="btn btn-primary" onClick = {this.logOut} >Logout</button>
             </div>
+            
           </div>
         </nav>
       </div>
