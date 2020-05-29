@@ -69,7 +69,9 @@ class Groupchat extends React.Component {
           console.log(error)
           this.setState({
             isAuthenticated: false
-          })
+          });
+          this.props.history.push('./login')
+
         })
 
   };

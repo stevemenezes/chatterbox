@@ -1,71 +1,67 @@
-import React, {useState} from 'react';
-import {Redirect} from 'react-router-dom';
+import React from 'react';
 import chat from '../lib/chat';
 import spinner from '../logo.svg';
 
-class Login extends React.Component{
-    constructor(props){
+class Login extends React.Component {
+    constructor(props) {
         super(props);
-        this.state= {
+        this.state = {
             name: '',
             isAuth: false,
             isSubmitting: false,
-            user:null,
+            user: null,
             errorText: '',
         };
     }
 
-    changeValue=(e)=>{
-        this.setState({[e.target.name]: e.target.value});
+    changeValue = (e) => {
+        this.setState({ [e.target.name]: e.target.value });
     }
 
-    showValue=(e)=>{
+    showValue = (e) => {
         e.preventDefault();
         this.login();
         e.target.reset();
     }
 
     toggleIsSubmitting = () => {
-        this.setState({isSubmitting: !this.state.isSubmitting});
+        this.setState({ isSubmitting: !this.state.isSubmitting });
     };
 
 
-    login=()=>{
+    login = () => {
         this.toggleIsSubmitting();
         chat.login(this.state.name)
-        .then(user=>{
-            this.setState({user, isAuth: true})
+            .then(user => {
+                this.setState({ user, isAuth: true })
             })
-        .then(user => {
+            .then(user => {
                 this.props.history.push({
-                pathname : '/chat',
-                state : this.state.user
+                    pathname: '/chat',
+                    state: this.state.user
+                })
             })
-        })    
-        .catch(error=>{
-        this.setState({errorText: "Username Invalid"})
-        this.toggleIsSubmitting();
-        });
+            .catch(error => {
+                this.setState({ errorText: "Username Invalid" })
+                this.toggleIsSubmitting();
+            });
     }
+    render() {
 
-
-
-    render(){
-        
-        return(
+        return (
             <div className="App">
                 <h2>Chat Room Login</h2>
                 <form onSubmit={this.showValue} >
                     <div className="form-group">
                         <label>
-                        Name:
-                        <input type="text" className="form-control" value={this.state.name} name="name" onChange={this.changeValue}/>
+                            Name:
+                        <input type="text" className="form-control" value={this.state.name} name="name" onChange={this.changeValue} />
                         </label>
-                    </div>    
-                    {this.state.isSubmitting ? 
-                    (<img src={spinner} alt="Spinner component" className="App-logo" />):
-                    (<input type="submit" disabled={this.state.name === ""} value="Submit" className="btn btn-primary" />
-                    )}
+                    </div>
+                    {this.state.isSubmitting ?
+                        (<img src={spinner} alt="Spinner component" className="App-logo" />) :
+                        (<input type="submit" disabled={this.state.name === ""} value="Submit" className="btn btn-primary" />
+                        )}
                 </form>
             </div>
         );
