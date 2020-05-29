@@ -2,27 +2,34 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import chat from "../lib/chat";
 import config from "../config";
+import { CometChat } from '@cometchat-pro/chat';
+import '../index.css';
+
+var usersRequest = new CometChat.UsersRequestBuilder().setLimit(10).build();
+
 class Groupchat extends React.Component {
   constructor(props) {
     super(props);
-this.state = {
+    this.state = {
       receiverID: "",
       messageText: null,
       groupMessage: [],
       user: {},
-      isAuthenticated: true
+      isAuthenticated: true,
+      presence: [],
+      userList: []
     };
-this.GUID = config.GUID;
+    this.GUID = config.GUID;
 
   }
-sendMessage = () => {
+  sendMessage = () => {
     chat.sendGroupMessage(this.GUID, this.state.messageText).then(
       message => {
         console.log("Message sent successfully:", message);
         this.setState(
           prevState => ({
             groupMessage: [...prevState.groupMessage, message],
-            messageText : null,
+            messageText: null,
           }),
           () => {
             this.scrollToBottom();
@@ -38,31 +45,28 @@ sendMessage = () => {
       }
     );
   };
-scrollToBottom = () => {
+  scrollToBottom = () => {
     const chat = document.getElementById("chatList");
     chat.scrollTop = chat.scrollHeight;
   };
-handleSubmit = event => {
+  handleSubmit = event => {
     event.preventDefault();
     this.sendMessage();
     event.target.reset();
   };
-handleChange = event => {
+  handleChange = event => {
     this.setState({ messageText: event.target.value });
   };
-getUser = () => {
-      chat
+  getUser = () => {
+    chat
       .getLoggedinUser()
       .then(
         user => {
-        this.setState({ user });
-        if(user === null || user === undefined )
-        {
-          this.props.history.push('./login');
-        }
-        console.log(user);
-      },
-      error =>{
+          this.setState({ user });
+          // console.log(user)
+        },
+        error => {
+          console.log(error)
           this.setState({
             isAuthenticated: false
           });
@@ -71,7 +75,8 @@ getUser = () => {
         })
 
   };
-messageListener = () => {
+
+  messageListener = () => {
     chat.addMessageListener((data, error) => {
       if (error) return console.log(`error: ${error}`);
       this.setState(
@@ -85,58 +90,93 @@ messageListener = () => {
     });
   };
 
-userListener = () =>{
-  chat.addUserListener((data, error)=>{
-    if (error) return console.log(`error: ${error}`);
-    console.log(data)
-  });
-}
+  getUserStatus = () => {
+    usersRequest.fetchNext().then(
+      userList => {
+        this.setState({ userList });
+      },
+      error => {
+        console.log("User list fetching failed with error:", error);
+      }
+    );
+  }
 
-componentDidMount() {
+  userListener = () => {
+    chat.addUserListener((data, error) => {
+      if (error) return console.log(`error: ${error}`);
+      console.log(data)
+      this.setState(
+        prevState => ({
+          presence: [...prevState.presence, data]
+        })
+      )
+    });
+  }
+
+  componentDidMount() {
     this.getUser();
     this.messageListener();
+    this.getUserStatus();
     this.userListener();
-    // chat.joinGroup(this.GUID)
   }
-  
-render() {
-  //console.log(this.props);  
-  const { isAuthenticated } = this.state;
+
+  render() {
+    //console.log(this.props);  
+    console.log(this.state.presence);
+    console.log(this.state.userList);
+    const { isAuthenticated } = this.state;
     if (!isAuthenticated) {
       return <Redirect to="/" />;
     }
     return (
-      <div className="chatWindow">
-        <ul className="chat" id="chatList">
-          {this.state.groupMessage.map(data => (
-            <div key={data.id}>
-              {this.state.user.uid === data.sender.uid ? (
-                <li className="self">
-                  <div className="msg">
-                    <p>{data.sender.uid}</p>
-                    <div className="message"> {data.data.text}</div>
-                  </div>
-                </li>
-              ) : (
-                <li className="other">
-                  <div className="msg">
-                    <p>{data.sender.uid}</p>
-                   <div className="message"> {data.data.text} </div>
-                  </div>
-                </li>
-              )}
+      <div className="conatiner">
+        <div className="row">
+          <div className="col-md-3">
+            <div className="user-list">
+              <ul className="nav nav-pills nav-stacked">
+                {this.state.userList.map(u => (
+                  u.status==="online"?
+                    <li><a href="#" style={{color:"green"}} key={u.uid}>{u.uid}</a></li>:
+                    <li><a href="#" style={{color:"red"}} key={u.uid}>{u.uid}</a></li>
+                ))}
+              </ul>
             </div>
-          ))}
-        </ul>
-        <div className="chatInputWrapper">
-          <form onSubmit={this.handleSubmit}>
-            <input
-              className="textarea input"
-              type="text"
-              placeholder="Enter your message..."
-              onChange={this.handleChange}
-            />
-          </form>
+          </div>
+          <div className="col-md-9">
+            <div className="chatWindow">
+              <ul className="chat" id="chatList">
+                {this.state.groupMessage.map(data => (
+                  <div key={data.id}>
+                    {this.state.user.uid === data.sender.uid ? (
+                      <li className="self">
+                        <div className="msg">
+                          <p>{data.sender.uid}</p>
+                          <div className="message"> {data.data.text}</div>
+                        </div>
+                      </li>
+                    ) : (
+                        <li className="other">
+                          <div className="msg">
+                            <p>{data.sender.uid}</p>
+                            <div className="message"> {data.data.text} </div>
+                          </div>
+                        </li>
+                      )}
+                  </div>
+                ))}
+              </ul>
+              <div className="chatInputWrapper">
+                <form onSubmit={this.handleSubmit}>
+                  <input
+                    className="textarea input"
+                    type="text"
+                    placeholder="Enter your message..."
+                    onChange={this.handleChange}
+                  />
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
