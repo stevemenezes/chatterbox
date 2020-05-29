@@ -59,10 +59,11 @@ getUser = () => {
         console.log(user)
       },
       error =>{
-        console.log(error)
           this.setState({
             isAuthenticated: false
-          })
+          });
+          this.props.history.push('./login')
+
         })
 
   };
