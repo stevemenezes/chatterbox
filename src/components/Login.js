@@ -40,6 +40,7 @@ class Login extends React.Component {
                     pathname: '/chat',
                     state: this.state.user
                 })
+                return;
             })
             .catch(error => {
                 this.setState({ errorText: "Username Invalid" })

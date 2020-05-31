@@ -61,10 +61,7 @@ class Groupchat extends React.Component {
     chat
       .getLoggedinUser()
       .then(
-        user => {
-          this.setState({ user });
-          // console.log(user)
-        },
+        user => {this.setState({user})},
         error => {
           console.log(error)
           this.setState({
@@ -90,10 +87,10 @@ class Groupchat extends React.Component {
     });
   };
 
-  getUserStatus = () => {
+  getUserStatus = (state) => {
     usersRequest.fetchNext().then(
       userList => {
-        this.setState({ userList });
+        state["userList"] = userList
       },
       error => {
         console.log("User list fetching failed with error:", error);
@@ -103,8 +100,7 @@ class Groupchat extends React.Component {
 
   userListener = () => {
     chat.addUserListener((data, error) => {
-      if (error) return console.log(`error: ${error}`);
-      console.log(data)
+      if (error) console.log(`error: ${error}`);
       this.setState(
         prevState => ({
           presence: [...prevState.presence, data]
@@ -113,72 +109,82 @@ class Groupchat extends React.Component {
     });
   }
 
-  componentDidMount() {
-    this.getUser();
+  chatSetup =() =>{
+    const state = {};
     this.messageListener();
-    this.getUserStatus();
+    this.getUserStatus(state);
     this.userListener();
+    console.log("Get USer",state)
+    this.getUser();
+    console.log(this.state.user)
   }
 
+
+
   render() {
-    //console.log(this.props);  
-    console.log(this.state.presence);
-    console.log(this.state.userList);
+    console.log("ReRender");
     const { isAuthenticated } = this.state;
     if (!isAuthenticated) {
       return <Redirect to="/" />;
     }
     return (
-      <div className="conatiner">
+      /*<div className="conatiner">
         <div className="row">
           <div className="col-md-3">
             <div className="user-list">
               <ul className="nav nav-pills nav-stacked">
                 {this.state.userList.map(u => (
-                  u.status==="online"?
-                    <li><a href="#" style={{color:"green"}} key={u.uid}>{u.uid}</a></li>:
-                    <li><a href="#" style={{color:"red"}} key={u.uid}>{u.uid}</a></li>
+                  u.status === "online" ?
+                    (<li key={u.uid}>
+                      <img src={u.avatar} className="img-circle" alt="Cinque Terre" width="40" height="40"/>
+                      <span style={{marginLeft: 20,textDecoration: false }}><span style={{ color: "green" }} >{u.uid}</span></span>
+                    </li>):
+                    (<li key={u.uid}>
+                        <img src={u.avatar} className="img-circle" alt="Cinque Terre" width="40" height="40"/>
+                        <span style={{marginLeft: 20,textDecoration: false }}><span  style={{ color: "red" }} >{u.uid}</span></span>
+                    </li>)
                 ))}
               </ul>
             </div>
-          </div>
-          <div className="col-md-9">
-            <div className="chatWindow">
-              <ul className="chat" id="chatList">
-                {this.state.groupMessage.map(data => (
-                  <div key={data.id}>
-                    {this.state.user.uid === data.sender.uid ? (
-                      <li className="self">
-                        <div className="msg">
-                          <p>{data.sender.uid}</p>
-                          <div className="message"> {data.data.text}</div>
-                        </div>
-                      </li>
-                    ) : (
-                        <li className="other">
+            </div>
+            <div className="col-md-9">
+              <div className="chatWindow">
+                <ul className="chat" id="chatList">
+                  {this.state.groupMessage.map(data => (
+                    <div key={data.id}>
+                      {this.state.user.uid === data.sender.uid ? (
+                        <li className="self">
                           <div className="msg">
                             <p>{data.sender.uid}</p>
-                            <div className="message"> {data.data.text} </div>
+                            <div className="message"> {data.data.text}</div>
                           </div>
                         </li>
-                      )}
-                  </div>
-                ))}
-              </ul>
-              <div className="chatInputWrapper">
-                <form onSubmit={this.handleSubmit}>
-                  <input
-                    className="textarea input"
-                    type="text"
-                    placeholder="Enter your message..."
-                    onChange={this.handleChange}
-                  />
-                </form>
+                      ) : (
+                          <li className="other">
+                            <div className="msg">
+                              <p>{data.sender.uid}</p>
+                              <div className="message"> {data.data.text} </div>
+                            </div>
+                          </li>
+                        )}
+                    </div>
+                  ))}
+                </ul>
+                <div className="chatInputWrapper">
+                  <form onSubmit={this.handleSubmit}>
+                    <input
+                      className="textarea input"
+                      type="text"
+                      placeholder="Enter your message..."
+                      onChange={this.handleChange}
+                    />
+                  </form>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </div>*/
+        <div></div>
     );
   }
 }
